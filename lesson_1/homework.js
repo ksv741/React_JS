@@ -1,40 +1,31 @@
-var employers = ['Alex', '', 'ludmila', 'Viktor', '', 'oleg', 'iNna', 'Ivan', 'Alex', 'Olga', ' Ann'];
+const employers = ['Alex', '', 'ludmila', 'Viktor', '', 'oleg', 'iNna', 'Ivan', 'Alex', 'Olga', ' Ann'];
 
-var employersNames = [];
-for (var i = 0; i < employers.length; i++) {
-	if (employers[i].length > 0 && employers[i].length != '') {
-		employersNames.push(employers[i]);
-	}
-}
-for (var i = 0; i < employersNames.length; i++) {
-	employersNames[i] = employersNames[i].toLowerCase().trim();
-}
+const employersNames = employers.filter((item) => (item.length > 0)).map((item) => (item.toLowerCase().trim()));
 
-var sponsors = {
+let sponsors = {
     cash: [40000, 5000, 30400, 12000],
     eu: ['SRL', 'PLO', 'J&K'],
     rus: ['RusAuto', 'SBO']
 };
-
-function calcCash(own) {
-    own = own || 0;
-    var everyCash = Array.prototype.slice.call(arguments);
-    var total = own;
-    for (var i = 0; i < everyCash[1].length; i++) {
-        total += +everyCash[1][i];
+const {cash, rus, eu, eu:[risk] } = sponsors;
+function calcCash(own = 0) {
+    let total = 0;
+    for (let i = 0; i < cash.length; i++) {
+        total += +cash[i];
     }
     return total;
 }
+let money = calcCash(cash);
 
-var money = calcCash(null, sponsors.cash);
+function makeBusiness({owner, director = 'Victor', cash, emp}) {
+    console.log(`We have a business. Owner: ${owner}, director: ${director}. Our budget: ${cash} . And our employers: ${emp}
+And we have a sponsors: 
+${[...eu, ...rus, 'unexpected sponsor'].join(' ')}
+Note. Be careful with ${risk}. It's a huge risk.`);
 
-function makeBusiness(owner, director, cash, emp) {
-    director = director || 'Victor';
-    var sumSponsors = sponsors.eu.concat(sponsors.rus, 'unexpected sponsor');
-    console.log('We have a business. Owner: ' + owner + ', director: ' + director + '. Our budget: ' + cash + '. And our employers: ' +
-    emp);
-    console.log('And we have a sponsors: ');
-    console.log.apply(null, sumSponsors);
-    console.log('Note. Be careful with ' + sponsors.eu[0] + ". It's a huge risk.");
 }
-makeBusiness.apply(null, ['Sam', null, money, employersNames]);
+makeBusiness({
+  owner: 'Sam',
+  cash: money,
+  emp: employersNames 
+});
